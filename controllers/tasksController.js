@@ -51,7 +51,7 @@ const tasksController = {
                 return res.status(200).json({ message: "count", data: tasks });
             }
 
-            const options = await Task.find(query, query_options.select, query_options)
+            const options = await Task.find(query, query_options.select || null)
              .sort(query_options.sort)
              .skip(query_options.skip)
              .limit(query_options.limit);

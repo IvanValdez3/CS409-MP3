@@ -13,12 +13,31 @@ function parseHelper(request) {
     //https://www.tutscoder.com/post/nodejs-filtering-sorting-pagination
 
     // query will define which document to fetch
-    const query = request.query.where ? JSON.parse(request.query.where) : {};
+    let query = {};
+    try {
+        query = request.query.where ? JSON.parse(request.query.where) : {};
+    } catch (e) {
+        query = {};
+    }
    
     // options will define how to fetch the document
+    let sort = {};
+    try {
+        sort = request.query.sort ? JSON.parse(request.query.sort) : {};
+    } catch (e) {
+        sort = {};
+    }
+
+    let select = '';
+    try {
+        select = request.query.select ? JSON.parse(request.query.select) : '';
+    } catch (e) {
+        select = '';
+    }
+
     const query_options = {
-        sort: request.query.sort ? JSON.parse(request.query.sort) : {},
-        select: request.query.select ? JSON.parse(request.query.select) : {},
+        sort,
+        select,
         skip: request.query.skip ? parseInt(request.query.skip, 10) : 0,
         limit: request.query.limit ? parseInt(request.query.limit, 10) : 100,
     };
