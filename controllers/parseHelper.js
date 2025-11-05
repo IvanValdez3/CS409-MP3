@@ -18,7 +18,7 @@ function parseHelper(request) {
         query = request.query.where ? JSON.parse(request.query.where) : {};
     } catch (e) {
         query = {};
-    }
+    } 
    
     // options will define how to fetch the document
     let sort = {};
