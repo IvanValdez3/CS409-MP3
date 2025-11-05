@@ -94,7 +94,7 @@ const tasksController = {
             if (assignedUser) {
                 await User.findByIdAndUpdate(assignedUser, { $push: { pendingTasks: newTask._id } });
             }
-            //await newTask.save();
+            await newTask.save();
             res.status(201).json({ message: 'Task created successfully', data: newTask });
         } catch (error) {
             //console.error('Error', error);
@@ -104,10 +104,13 @@ const tasksController = {
 
     getTaskId : async (req, res) => {
         try {
-            const task = await Task.findById(req.params.taskId);
-            task = task.select(req.query.select || '');
+            const select = req.query.select || '';
+            let task = await Task.findById(req.params.taskId);
             if (!task) {
                 return res.status(404).json({ message: 'Task not found', data: null });
+            }
+            if (select) {
+                task = task.select(select);
             }
             res.status(200).json({ message: 'success, following is the task', data: task });
         } catch (error) {
@@ -148,8 +151,7 @@ const tasksController = {
             task.name = name;
             task.deadline = deadline;
             task.description = req.body.description || task.description;
-            task.completed = req.body.completed || task.completed
-            ;
+            task.completed = req.body.completed || task.completed;
             await task.save();
             res.status(200).json({ message: 'Task updated successfully', data: task });
         } catch (error) {
@@ -171,7 +173,7 @@ const tasksController = {
                 await User.findByIdAndUpdate(task.assignedUser, { $pull: { pendingTasks: task._id } });
             }
 
-            await task.remove();
+            await Task.findByIdAndDelete(req.params.taskId);
             res.status(200).json({ message: 'Task deleted successfully', data: null });
         } catch (error) {
             //console.error('Error', error);

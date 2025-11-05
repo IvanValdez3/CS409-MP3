@@ -60,7 +60,7 @@ const userController = {
             //if (assignedUser) {
             //    await User.findByIdAndUpdate(assignedUser, { $push: { pendingTasks: newTask._id } });
             //}
-            //await newTask.save();
+            await newUser.save();
             res.status(201).json({ message: 'User created successfully', data: newUser });
         } catch (error) {
             //console.error('Error', error);
@@ -71,10 +71,12 @@ const userController = {
     getTaskId : async (req, res) => {
         try {
             const select = req.query.select || '';
-            const user = await User.findById(req.params.userId);
-            user = user.select(select);
+            let user = await User.findById(req.params.userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found', data: null });
+            }
+            if (select) {
+                user = user.select(select);
             }
             res.status(200).json({ message: 'success, following is the user', data: user });
         } catch (error) {
@@ -137,7 +139,7 @@ const userController = {
                 await User.findByIdAndUpdate(user.assignedUser, { $pull: { pendingTasks: user._id } });
             }
 
-            await user.remove();
+            await User.findByIdAndDelete(req.params.userId);
             res.status(200).json({ message: 'User deleted successfully', data: null });
         } catch (error) {
             //console.error('Error', error);
