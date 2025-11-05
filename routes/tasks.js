@@ -2,9 +2,9 @@
 const express = require('express');
 
 // For Task we need 5 different actions
-const { getTasks, postTask, getTaskId, putTask, deleteTask } = require('to be created');
+const { getTasks, postTask, getTaskId, putTask, deleteTask } = require('../controllers/tasksController.js');
 
-modeule.exports = function (router) {
+module.exports = function (router) {
     router.get('/tasks', getTasks);
     router.post('/tasks', postTask);
     router.get('/tasks/:taskId', getTaskId);

@@ -2,7 +2,7 @@
 const express = require('express');
 
 // For User we need 5 different actions
-const { getUsers, postUsers, getUserId, putUser, deleteUser } = require('to be created');
+const { getUsers, postUsers, getUserId, putUser, deleteUser } = require('../controllers/userController.js');
 
 module.exports = function (router) {
     router.get('/users', getUsers);
