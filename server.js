@@ -32,6 +32,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Use routes as a module (see index.js)
+app.get('/', (req, res) => res.send('Server is running'));
+
+
 require('./routes')(app, router);
 
 // Start the server
